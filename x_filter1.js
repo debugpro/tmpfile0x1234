@@ -37,7 +37,7 @@ if (body) {
                             const matchedKeyword = match[0];
                             const replacementText = `*** [屏蔽命中: ${matchedKeyword}] ***`;
 
-                            console.log(`[X-Filter] 屏蔽成功: ${matchedKeyword}`);
+                            console.log(`[X-Filter] 物理屏蔽成功: ${text}`);
 
                             // --- 执行改写逻辑 ---
 
