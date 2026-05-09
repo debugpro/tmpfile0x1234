@@ -32,7 +32,7 @@ if (body) {
                     if (fullText) {
                         const matchedKeyword = KEYWORDS.find(kw => fullText.includes(kw));
                         if (matchedKeyword) {
-                            console.log(`[X-Filter] 屏蔽成功! 关键词: [${matchedKeyword}] 内容: ${fullText.substring(0, 100)}...`);
+                            console.log(`[X-Filter] 屏蔽成功! 关键词: [${matchedKeyword}] 内容: ${fullText.substring(0, 30)}...`);
                             blockedCount++;
                             return false; // 过滤该 entry
                         }
