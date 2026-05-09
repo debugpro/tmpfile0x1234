@@ -32,7 +32,7 @@ if (body) {
                             // 在内容开头注入标记
                             result.legacy.full_text = `❌ 屏蔽命中 [${matched}] ❌\n${result.legacy.full_text}`;
                             hitCount++;
-                            continue;
+                            return;
                         }
                     }
 
@@ -50,7 +50,7 @@ if (body) {
                                 result.legacy.full_text = `❌ 长推文屏蔽 [${matchedNote}] ❌\n${result.legacy.full_text}`;
                             }
                             hitCount++;
-                            continue;
+                            return;
                         }
                     }
                 });
