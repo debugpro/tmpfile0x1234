@@ -3,7 +3,7 @@
  * 适配数据结构: data.home.home_timeline_urt
  */
 
-const KEYWORDS = ['一模一样']; // 在此添加关键词
+const KEYWORDS = ['一模一样','帮助',‘收益’]; // 在此添加关键词
 
 let body = $response.body;
 
