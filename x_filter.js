@@ -1,5 +1,5 @@
 console.log("--- [X-Filter] 脚本已启动 ---");
-const KEYWORDS = ['一模一样','帮助','收益']; // 在此添加关键词
+const KEYWORDS = ['人','帮助','收益','加密']; // 在此添加关键词
 
 let body = $response.body;
 
@@ -32,7 +32,7 @@ if (body) {
                     if (fullText) {
                         const matchedKeyword = KEYWORDS.find(kw => fullText.includes(kw));
                         if (matchedKeyword) {
-                            console.log(`[X-Filter] 屏蔽成功! 关键词: [${matchedKeyword}] 内容: ${fullText.substring(0, 30)}...`);
+                            console.log(`[X-Filter] 屏蔽成功! 关键词: [${matchedKeyword}] 内容: ${fullText.substring(0, 100)}...`);
                             blockedCount++;
                             return false; // 过滤该 entry
                         }
