@@ -3,7 +3,7 @@
  * 效果: 将命中推文替换为 *** [屏蔽命中: 关键词] ***，并清理引用内容
  */
 
-const KEYWORDS = ['蓝v互关', '互关', '求互关', '互粉', '关注回关', '秒回关', '贬值', 'AI'];
+const KEYWORDS = ['蓝v互关', '蓝V互关', '互关', '求互关', '互粉', '关注回关', '秒回关'];
 // 预编译正则用于匹配
 const REG_EX = new RegExp(KEYWORDS.join('|'), 'i');
 
@@ -35,9 +35,9 @@ if (body) {
                         const match = text.match(REG_EX);
                         if (match) {
                             const matchedKeyword = match[0];
-                            const replacementText = `*** [屏蔽命中: ${matchedKeyword}] ***`;
+                            const replacementText = `⚠️ [屏蔽命中: ${matchedKeyword}] ⚠️`;
 
-                            console.log(`[X-Filter] 物理屏蔽成功: ${text}`);
+                            //console.log(`[X-Filter] 物理屏蔽成功: ${text}`);
 
                             // --- 执行改写逻辑 ---
 
