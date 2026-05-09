@@ -36,7 +36,7 @@ if (body) {
                         if (match) {
                             const matchedKeyword = match[0];
                             const userName = result.core?.user_results?.result?.legacy?.name || "未知用户";
-                            const replacementText = `*** [屏蔽${userName}: ${matchedKeyword}] ***`;
+                            const replacementText = `*** [屏蔽命中: ${matchedKeyword}] ***`;
 
                             // --- 执行改写逻辑 ---
 
