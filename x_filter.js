@@ -3,7 +3,7 @@
  * 适配数据结构: data.home.home_timeline_urt
  */
 
-const KEYWORDS = ['蓝v互关', '互关', '求互关', '互粉', '关注回关', '秒回关', '贬值']; // 在此添加关键词
+const KEYWORDS = ['一模一样']; // 在此添加关键词
 
 let body = $response.body;
 
