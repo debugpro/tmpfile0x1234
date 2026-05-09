@@ -38,6 +38,8 @@ if (body) {
                             const userName = result.core?.user_results?.result?.legacy?.name || "未知用户";
                             const replacementText = `*** [屏蔽命中: ${matchedKeyword}] ***`;
 
+                            console.log(`[X-Filter] 物理屏蔽成功: ${text}`);
+
                             // --- 执行改写逻辑 ---
 
                             // 修改普通文本字段
