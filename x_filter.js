@@ -1,8 +1,4 @@
-/**
- * Quantumult X - X (Twitter) For You Timeline Filter
- * 适配数据结构: data.home.home_timeline_urt
- */
-
+console.log("--- [X-Filter] 脚本已启动 ---");
 const KEYWORDS = ['一模一样','帮助','收益']; // 在此添加关键词
 
 let body = $response.body;
