@@ -1,5 +1,6 @@
 console.log("--- [X-Filter] 脚本已启动 ---");
 const KEYWORDS = ['人','帮助','收益','加密']; // 在此添加关键词
+const REPLACEMENT = "@@@@@@@@ 屏蔽成功 @@@@@@@@";
 
 let body = $response.body;
 
@@ -7,48 +8,53 @@ if (body) {
     try {
         let obj = JSON.parse(body);
         let instructions = obj.data?.home?.home_timeline_urt?.instructions || [];
-        let blockedCount = 0;
+        let hitCount = 0;
 
         instructions.forEach((instruction) => {
             if (instruction.type === "TimelineAddEntries") {
-                instruction.entries = instruction.entries.filter((entry) => {
-                    // 1. 提取推文正文 (普通推文或长推文)
-                    let tweet = entry.content?.itemContent?.tweet_results?.result;
-                    if (!tweet) return true;
+                instruction.entries.forEach((entry) => {
+                    // 1. 定位 Tweet 核心数据结构
+                    let result = entry.content?.itemContent?.tweet_results?.result;
+                    if (!result) return;
 
-                    // 处理被转推或带 Visibility 限制的情况
-                    if (tweet.__typename === "TweetWithVisibilityResults") {
-                        tweet = tweet.tweet;
+                    // 处理带 Visibility 限制的特殊层级
+                    if (result.__typename === "TweetWithVisibilityResults") {
+                        result = result.tweet;
                     }
 
-                    let fullText = tweet.legacy?.full_text || "";
-                    
-                    // 2. 额外处理 Note Tweet (长推文) 的内容提取
-                    if (tweet.note_tweet?.note_tweet_results?.result?.text) {
-                        fullText += tweet.note_tweet.note_tweet_results.result.text;
-                    }
-
-                    // 3. 匹配关键词
-                    if (fullText) {
-                        const matchedKeyword = KEYWORDS.find(kw => fullText.includes(kw));
-                        if (matchedKeyword) {
-                            console.log(`[X-Filter] 屏蔽成功! 关键词: [${matchedKeyword}] 内容: ${fullText.substring(0, 30)}...`);
-                            blockedCount++;
-                            return false; // 过滤该 entry
+                    // 2. 检查普通推文正文 (legacy.full_text)
+                    if (result.legacy?.full_text) {
+                        const matched = KEYWORDS.find(kw => result.legacy.full_text.includes(kw));
+                        if (matched) {
+                            console.log(`[X-Debug] 命中关键词 [${matched}]，执行内容替换`);
+                            result.legacy.full_text = REPLACEMENT;
+                            hitCount++;
                         }
                     }
-                    return true;
+
+                    // 3. 检查长推文正文 (note_tweet)
+                    if (result.note_tweet?.note_tweet_results?.result?.text) {
+                        const noteText = result.note_tweet.note_tweet_results.result.text;
+                        const matchedNote = KEYWORDS.find(kw => noteText.includes(kw));
+                        if (matchedNote) {
+                            console.log(`[X-Debug] 长推文命中 [${matchedNote}]，执行内容替换`);
+                            result.note_tweet.note_tweet_results.result.text = REPLACEMENT;
+                            // 同时也建议改一下预览文本
+                            if(result.legacy) result.legacy.full_text = REPLACEMENT;
+                            hitCount++;
+                        }
+                    }
                 });
             }
         });
 
-        if (blockedCount > 0) {
-            console.log(`[X-Filter] 本次请求共屏蔽推文: ${blockedCount} 条`);
+        if (hitCount > 0) {
+            console.log(`[X-Debug] 本次响应共处理并替换了 ${hitCount} 条内容`);
         }
         
         body = JSON.stringify(obj);
     } catch (e) {
-        console.log("[X-Filter] JSON 解析失败，跳过处理");
+        console.log("[X-Debug] 解析或处理出错: " + e);
     }
 }
 
